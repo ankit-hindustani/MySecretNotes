@@ -14,3 +14,7 @@ body {
   color: #fff;
   background-color: #000;
 }
+
+#sticky-footer {
+  flex-shrink: none;
+}
