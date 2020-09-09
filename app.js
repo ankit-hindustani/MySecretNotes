@@ -39,7 +39,7 @@ const userSchema=new mongoose.Schema({
   email:String,
   password:String,
   googleId:String,
-  secret:String
+  secret:[String]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -94,15 +94,36 @@ app.get("/register",function(req,res){
 
 app.get("/login",function(req,res){
   res.render("login");
-})
+});
 
 app.get("/secrets",function(req,res){
+
   if(req.isAuthenticated()){
-    res.render("secrets");
-  }else{
-    res.redirect("/login");
+    User.findById(req.user.id,function(err,foundUser){
+      if(err){
+        console.log(err);
+      }else{
+        if(foundUser){
+            res.render("secrets",{userWithSecrets:foundUser.secret});
+          }
+          else{
+            res.redirect("/login");
+          }
+      }
+    });
   }
 });
+
+    // User.find({"secret":{$ne:null}} ,function(err,foundUsers){
+    //   if(err){
+    //     console.log(err);
+    //   }else{
+    //     if(foundUsers){
+    //       res.render("secrets",{usersWithSecrets:foundUsers});
+    //     }
+    //   }
+    // });
+
 
 app.get("/submit",function(req,res){
   if(req.isAuthenticated()){
@@ -134,20 +155,40 @@ app.post("/register",function(req,res){
 
 });
 
-app.post("/login",function(req,res){
+app.post("/login", function(req, res,next){
   const user = new User({
-    username:req.body.username,
-    password:req.body.password
+    username: req.body.username,
+    password: req.body.password
   });
-
-  req.login(user,function(err){
-    if(err){
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
       console.log(err);
-    }else{
-      passport.authenticate("local");
-      res.redirect("/secrets");
+       return next(err);
+     }
+    if (!user) {
+      return res.redirect('/login');
     }
-  });
+    // req / res held in closure
+    req.logIn(user, function(err) {
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
+      return res.redirect("/secrets");
+    });
+
+  })(req, res, next);
+
+  // req.login(user, function(err){
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     passport.authenticate("local",(req, res, function(){
+  //       console.log(res);
+  //       res.redirect("/secrets");
+  //     }));
+  //   }
+  // });
 });
 
 app.post("/submit",function(req,res){
@@ -159,7 +200,7 @@ app.post("/submit",function(req,res){
       console.log(err);
     }else{
       if(foundUser){
-        foundUser.secret=submittedNewSecret;
+        foundUser.secret.push(submittedNewSecret);
         foundUser.save(function(){
           res.redirect("/secrets");
         })
@@ -169,6 +210,6 @@ app.post("/submit",function(req,res){
 })
 
 
-app.listen(3000,function(){
+app.listen(process.env.PORT ||3000,function(){
   console.log("server start at 3000");
 })

@@ -2,6 +2,9 @@
 body {
 background-color: #E8ECEF;
 }
+.center{
+  text-align:center;
+}
 
 .centered {
     padding-top: 150px;
@@ -10,7 +13,7 @@ background-color: #E8ECEF;
 
 .secret-text {
   text-align: center;
-  font-size: 2rem;
+  font-size: 1rem;
   color: #fff;
   background-color: #000;
 }

@@ -4,18 +4,21 @@
 
   <div class="row">
     <div class="col-sm-8">
+      <a href="/auth/google" class="btn btn-danger btn-block"><i class="fab fa-google"></i> Sign up with <b>Google</b></a>
+      <p class="center">or</p>
       <div class="card">
+
         <div class="card-body">
 
           <!-- Makes POST request to /register route -->
           <form action="/register" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="username">
+              <input type="email" class="form-control" name="username" placeholder="Email id">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <input type="password" class="form-control" name="password" placeholder="Enter new Password">
             </div>
             <button type="submit" class="btn btn-dark">Register</button>
           </form>
@@ -29,16 +32,6 @@
       </div>
     </div>
 
-    <!-- <div class="col-sm-4">
-      <div class="card social-block">
-        <div class="card-body">
-          <a class="btn btn-block" href="/auth/google" role="button">
-            <i class="fab fa-google"></i>
-            Sign Up with Google
-          </a>
-        </div>
-      </div>
-    </div> -->
 
   </div>
 </div>
