@@ -127,8 +127,10 @@ app.get("/submit",function(req,res){
 
 app.get("/logout",function(req,res){
   req.logout();
-  req.session = null;
-  res.redirect("/");
+  req.session.destroy(function(err) {
+    delete req.session;
+    res.redirect("/");
+})
 });
 
 
