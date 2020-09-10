@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(session({
   secret:process.env.SECRET,
-  resave:true,
+  resave:false,
   saveUninitialized:true
 }));
 
@@ -60,11 +60,12 @@ passport.deserializeUser(function(id, done) {
     done(err, user);
   });
 });
-
+//"http://localhost:3000/auth/google/mysecretnotes" || 
+const callBackUrl = "http://mysecretnotes.herokuapp.com/auth/google/mysecretnotes";
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/mysecretnotes"
+    callbackURL: callBackUrl
   },
   function(accessToken, refreshToken, profile, cb) {
 
