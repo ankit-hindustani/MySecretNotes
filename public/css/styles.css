@@ -2,6 +2,14 @@
 body {
 background-color: #E8ECEF;
 }
+
+.btnSymbol {
+  background-color: transparent;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+
 .center{
   text-align:center;
 }
@@ -25,6 +33,11 @@ background-color: #E8ECEF;
   color: #fff;
   background-color: #25383C;
 }
+
+.item {
+  display: flex;
+}
+
 
 #sticky-footer {
   flex-shrink: none;

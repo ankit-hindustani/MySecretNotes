@@ -189,7 +189,24 @@ app.post("/submit",function(req,res){
       }
     }
   })
-})
+});
+
+app.post("/delete",function(req,res){
+  const indexOfItem=req.body.indexOfItem;
+  User.findById(req.user.id,function(err,foundUser){
+    if(err){
+      console.log(err);
+    }else{
+      if(foundUser){
+        foundUser.secret.splice(indexOfItem,1);
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        })
+        };
+      }
+
+    })
+});
 
 
 app.listen(process.env.PORT||3000,function(){
